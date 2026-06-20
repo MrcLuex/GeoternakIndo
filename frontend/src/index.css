@@ -1,41 +1,62 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    index.css — GeoTernak Indonesia
-   Global variables · Typography · Reset · Scrollbar · Root colors
+   Global variables · Typography · Reset · Scrollbar · Root colors · Animations
    ───────────────────────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 
 /* ── Design Tokens ─────────────────────────────────────────────────────────── */
 :root {
-  /* Background layers */
-  --color-bg:          #0F172A;
-  --color-surface:     #1E293B;
-  --color-surface-low: #0A1628;
-  --color-surface-mid: #111827;
+  /* Background layers — deep navy-black */
+  --color-bg:          #060D1A;
+  --color-surface:     #0D1B2E;
+  --color-surface-low: #080F1C;
+  --color-surface-mid: #0F1E35;
+  --color-surface-hi:  #1A2D47;
+
+  /* Glass surfaces */
+  --glass-bg:          rgba(13, 27, 46, 0.7);
+  --glass-border:      rgba(96, 165, 250, 0.12);
+  --glass-blur:        blur(16px);
 
   /* Borders */
-  --color-border:      #334155;
-  --color-border-subtle: #1E293B;
-  --color-border-low:  #1A2D4A;
+  --color-border:        #1E3A5F;
+  --color-border-subtle: #0F2040;
+  --color-border-low:    #0A1628;
+  --color-border-glow:   rgba(59, 130, 246, 0.4);
 
-  /* Brand */
+  /* Brand — blue spectrum */
   --color-primary:     #3B82F6;
   --color-primary-dim: #2563EB;
+  --color-primary-glow: rgba(59, 130, 246, 0.35);
   --color-secondary:   #60A5FA;
+  --color-accent:      #38BDF8;
 
-  /* Text */
-  --color-text-primary:   #F8FAFC;
+  /* Semantic colors */
+  --color-success:     #10B981;
+  --color-success-dim: rgba(16, 185, 129, 0.15);
+  --color-warning:     #F59E0B;
+  --color-warning-dim: rgba(245, 158, 11, 0.15);
+  --color-danger:      #EF4444;
+  --color-danger-dim:  rgba(239, 68, 68, 0.15);
+
+  /* Text scale */
+  --color-text-primary:   #F1F5F9;
   --color-text-secondary: #CBD5E1;
   --color-text-muted:     #64748B;
-  --color-text-faint:     #475569;
+  --color-text-faint:     #334155;
 
-  /* Semantic */
-  --color-success: #16A34A;
-  --color-warning: #F59E0B;
-  --color-danger:  #DC2626;
+  /* Accent palette for charts/cards */
+  --accent-blue:    #3B82F6;
+  --accent-sky:     #38BDF8;
+  --accent-emerald: #10B981;
+  --accent-amber:   #F59E0B;
+  --accent-rose:    #F43F5E;
+  --accent-violet:  #8B5CF6;
 
   /* Typography */
-  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-sans:    'Plus Jakarta Sans', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
 
   /* Type scale */
   --text-xs:   10px;
@@ -45,6 +66,8 @@
   --text-lg:   16px;
   --text-xl:   20px;
   --text-2xl:  24px;
+  --text-3xl:  32px;
+  --text-4xl:  42px;
 
   /* Spacing */
   --space-1: 4px;
@@ -53,16 +76,33 @@
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
+  --space-8: 32px;
 
   /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 10px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
 
   /* Borders */
-  --border-subtle: 1px solid var(--color-border-subtle);
+  --border-subtle:  1px solid var(--color-border-subtle);
   --border-default: 1px solid var(--color-border);
+  --border-glow:    1px solid var(--color-border-glow);
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 24px rgba(59,130,246,0.25);
+  --shadow-glow-strong: 0 0 40px rgba(59,130,246,0.4);
+
+  /* Transitions */
+  --transition-fast:   0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:   0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ── Reset ─────────────────────────────────────────────────────────────────── */
@@ -98,8 +138,8 @@ select, input {
 
 /* ── Scrollbar ─────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -108,14 +148,15 @@ select, input {
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
-  border-radius: 3px;
+  border-radius: 99px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-faint);
+  background: var(--color-primary);
 }
 
-/* ── Animations ────────────────────────────────────────────────────────────── */
+/* ── Keyframe Animations ───────────────────────────────────────────────────── */
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.3; }
@@ -123,4 +164,97 @@ select, input {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(59,130,246,0.3); }
+  50%       { box-shadow: 0 0 28px rgba(59,130,246,0.65); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(60px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes progress-bar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* ── Utility Classes ───────────────────────────────────────────────────────── */
+.animate-fade-up {
+  animation: fadeUp 0.5s var(--transition-base) both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s var(--transition-spring) both;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #60A5FA, #38BDF8, #10B981);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
 }

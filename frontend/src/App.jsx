@@ -21,8 +21,85 @@ import './App.css'
 // ── Constants ────────────────────────────────────────────────────────────────
 const HEWAN_OPTIONS = ['Sapi', 'Ayam', 'Kambing']
 const TAHUN_OPTIONS = [2022, 2023, 2024, 2025]
-const COLOR_NEUTRAL  = '#334155'
+const COLOR_NEUTRAL  = '#1E3A5F'
 const COLOR_SELECTED = '#3b82f6'
+
+// ── Landing Screen ───────────────────────────────────────────────────────────
+function LandingScreen({ onEnter }) {
+  const [fading, setFading] = useState(false)
+
+  function handleEnter() {
+    setFading(true)
+    setTimeout(onEnter, 480)
+  }
+
+  return (
+    <div className={`landing-screen${fading ? ' fade-out' : ''}`}>
+      {/* Animated orbs */}
+      <div className="landing-orbs">
+        <div className="landing-orb landing-orb-1" />
+        <div className="landing-orb landing-orb-2" />
+        <div className="landing-orb landing-orb-3" />
+      </div>
+
+      {/* Grid background */}
+      <div className="landing-grid" />
+      <div className="landing-bg" />
+
+      {/* Main content */}
+      <div className="landing-content">
+        {/* Logo */}
+        <div className="landing-logo">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+        </div>
+
+        {/* Title */}
+        <div>
+          <h1 className="landing-title">
+            <span className="gradient-text">GeoTernak</span>
+            {' '}Indonesia
+          </h1>
+          <p className="landing-subtitle">
+            Platform WebGIS interaktif untuk analisis spasial produksi &amp; populasi ternak
+            di seluruh provinsi Indonesia secara real-time.
+          </p>
+        </div>
+
+        {/* Feature chips */}
+        <div className="landing-features">
+          <div className="landing-feature-chip">
+            <span className="chip-dot" style={{ background: '#3B82F6' }} />
+            Peta Interaktif
+          </div>
+          <div className="landing-feature-chip">
+            <span className="chip-dot" style={{ background: '#10B981' }} />
+            Data Real-time
+          </div>
+          <div className="landing-feature-chip">
+            <span className="chip-dot" style={{ background: '#F59E0B' }} />
+            Analisis Statistik
+          </div>
+          <div className="landing-feature-chip">
+            <span className="chip-dot" style={{ background: '#8B5CF6' }} />
+            3 Jenis Ternak
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="landing-cta">
+          <button className="landing-btn" onClick={handleEnter}>
+            Mulai Eksplorasi →
+          </button>
+          <button className="landing-skip" onClick={handleEnter}>
+            Lewati intro
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const DIST_BINS = [
   { label: '0 – 5.000',       min: 0,     max: 5000,     color: '#ffffb2' },
@@ -271,11 +348,20 @@ function ProvinsiInfoBox({ info, isHover, hewan, tahun, populasiMap, rataProduks
 }
 
 // ── KPI Card ──────────────────────────────────────────────────────────────────
-function KpiCard({ label, value }) {
+function KpiCard({ label, value, sub, accent }) {
+  const accentColor = accent || '#3B82F6'
+  const glowColor   = accentColor + '22'
   return (
-    <div className="kpi-card">
+    <div
+      className="kpi-card"
+      style={{
+        '--kpi-accent': accentColor,
+        '--kpi-glow':   glowColor,
+      }}
+    >
       <div className="kpi-label">{label}</div>
-      <div className="kpi-value">{value}</div>
+      <div className="kpi-value" style={{ color: '#FFFFFF' }}>{value}</div>
+      {sub && <div className="kpi-sub">{sub}</div>}
     </div>
   )
 }
@@ -1018,6 +1104,7 @@ function DashboardView({ provinsiData, hewan, tahun, loading, dataGabung, loadin
 
 // ── Main App Component ────────────────────────────────────────────────────────
 export default function App() {
+  const [showLanding, setShowLanding]             = useState(true)
   const [geoData, setGeoData]                     = useState(null)
   const [provinsiData, setProvinsiData]           = useState([])
   const [populasiData, setPopulasiData]           = useState({})
@@ -1183,6 +1270,7 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
+      {showLanding && <LandingScreen onEnter={() => setShowLanding(false)} />}
 
       {/* Hamburger toggle */}
       <button
