@@ -1457,7 +1457,7 @@ export default function App() {
             <MapController commandRef={zoomToRef} />
             {geoData && (
               <GeoJSON
-                key={`${hewan}-${tahun}-${isExploring}`}
+                key={`${hewan}-${tahun}-${isExploring}-${provinsiData.length}`}
                 data={geoData}
                 style={styleFeature}
                 onEachFeature={onEachFeature}

@@ -1494,7 +1494,8 @@
   color: var(--color-text-muted);
   max-width: 520px;
   line-height: 1.65;
-  margin: -12px 0 0;
+  margin: -12px auto 0;
+  text-align: center;
 }
 
 .landing-features {
