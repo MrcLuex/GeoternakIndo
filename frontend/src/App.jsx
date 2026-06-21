@@ -1118,6 +1118,7 @@ export default function App() {
   const [searchQuery, setSearchQuery]             = useState('')
   const [hoveredProvinsi, setHoveredProvinsi]     = useState(null)
   const [selectedProvinsi, setSelectedProvinsi]   = useState(null)
+  const [mapKey, setMapKey]                       = useState(0)
 
   const provinsiDataRef     = useRef([])
   const selectedProvinsiRef = useRef(null)
@@ -1147,6 +1148,7 @@ export default function App() {
         setSelectedProvinsi(null)
         selectedProvinsiRef.current = null
         setHoveredProvinsi(null)
+        setMapKey(prev => prev + 1)
       })
       .catch(err => console.error('API error:', err))
       .finally(() => setLoading(false))
@@ -1457,7 +1459,7 @@ export default function App() {
             <MapController commandRef={zoomToRef} />
             {geoData && (
               <GeoJSON
-                key={`${hewan}-${tahun}-${isExploring}-${provinsiData.length}`}
+                key={`geojson-map-${mapKey}-${isExploring}`}
                 data={geoData}
                 style={styleFeature}
                 onEachFeature={onEachFeature}
